@@ -2,6 +2,7 @@
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
 ![](https://img.shields.io/badge/maintained-yes-green.svg?style=flat)
+[![Build Status](https://travis-ci.org/minpark815/NeuralNetwork.svg?branch=master)](https://travis-ci.org/minpark815/NeuralNetwork)
 
 :hourglass: *Work in Progress*
 
@@ -12,12 +13,12 @@ built with :heartpulse:
 Neural Network in C++
 
 ## Documentation
-[Documentation](https://cdn.rawgit.com/minpark815/NeuralNetwork/gh-pages/index.html)
-- RawGit
-
-[Documentation Backup](https://minpark815.github.io/NeuralNetwork/)
+[Documentation](https://minpark815.github.io/NeuralNetwork/)
 - rendered using Github Pages
-- last updated 6/8/2018 8:11 am CST
+- built by TravisCI
+
+[Documentation Backup](https://cdn.rawgit.com/minpark815/NeuralNetwork/gh-pages/index.html)
+- RawGit
 
 ## Motivation
 
