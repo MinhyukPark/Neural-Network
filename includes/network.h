@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <iostream>
+#include "layer.h"
 
 /**
  * @brief Network object
@@ -21,8 +22,9 @@ class Network {
     public:
         //! Constructor that calls _init_network
         Network();
+        void test();
     private:
-        // std::vector<Layer>* _layers;
+        std::vector<Layer*>* _layers;
         //! Initializes appropriate member variables
         int _init_network();
 };

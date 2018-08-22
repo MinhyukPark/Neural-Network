@@ -4,7 +4,7 @@ EXE_DIR = ..
 LIBS_DIR = libs
 EXE_NN=nn
 # add more libraries here if necessary
-OBJS_NN=$(EXE_NN).o
+OBJS_NN=$(EXE_NN).o network.o layer.o
 
 ## COMPILER
 # using gcc over clang because of pre-fetching optimization that is coming eventually
