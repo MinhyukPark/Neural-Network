@@ -52,6 +52,10 @@ to build for debugging
 
 ## TODOs
 
+### Tedious Fixes
+
+Decide on memory management and add in copy constructors and destructors as soon as possible.
+
 ### Design Decisions
 
 What things are going to be classes? Structs? Simple functions?
