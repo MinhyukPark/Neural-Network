@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <iostream>
+#include "linalg.h"
 
 /**
  * @brief Layer object

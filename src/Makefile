@@ -4,7 +4,7 @@ EXE_DIR = ..
 LIBS_DIR = libs
 EXE_NN=nn
 # add more libraries here if necessary
-OBJS_NN=$(EXE_NN).o network.o layer.o
+OBJS_NN=$(EXE_NN).o network.o layer.o linalg.o
 
 ## COMPILER
 # using gcc over clang because of pre-fetching optimization that is coming eventually
@@ -66,6 +66,14 @@ $(OBJS_DIR)/%-debug.o: %.cpp | $(OBJS_DIR)
 	$(CC) $(CFLAGS_DEBUG) $< -o $@
 
 $(OBJS_DIR)/%-release.o: %.cpp | $(OBJS_DIR)
+	@mkdir -p $(basename $@)
+	$(CC)  $(CFLAGS_RELEASE) $< -o $@
+
+$(OBJS_DIR)/%-debug.o: %.c | $(OBJS_DIR)
+	@mkdir -p $(basename $@)
+	$(CC) $(CFLAGS_DEBUG) $< -o $@
+
+$(OBJS_DIR)/%-release.o: %.c | $(OBJS_DIR)
 	@mkdir -p $(basename $@)
 	$(CC)  $(CFLAGS_RELEASE) $< -o $@
 

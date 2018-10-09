@@ -30,6 +30,26 @@ int Network::_init_network() {
     return 0;
 }
 
+double** affine_forward(double** a, Layer* layer) {
+    return NULL;
+}
+
+double** relu_forward(double** z) {
+    return NULL;
+}
+
+double** cross_entropy(double** f, double** a) {
+    return NULL;
+} 
+
+double** affine_backward(double** df, double** a, Layer* layer) {
+    return NULL;
+}
+
+double** relu_backward(double** df, double** a, Layer* layer, double** a_prev) {
+    return NULL;
+}
+
 void Network::test() {
     std::cout <<"num layers: ";
     std::cout << _layers->size() <<std::endl;
