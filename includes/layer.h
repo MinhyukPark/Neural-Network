@@ -25,7 +25,8 @@ class Layer {
             return out;
         }
     private:
-        std::vector<int>* _nodes;
+        std::vector<double>* _nodes;
+        std::vector<double>* _bias;
         //! Initializes appropriate member variables
         int _init_layer();
 };
