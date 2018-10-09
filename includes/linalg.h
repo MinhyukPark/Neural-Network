@@ -12,6 +12,7 @@
 #include <math.h>
 #include <time.h>
 #include <assert.h>
+#include <iostream>
 
 //! macro for element access in a matrix struct
 #define MAT(m, x, y) (m->data[(x * m->col) + y])
@@ -31,6 +32,14 @@ typedef struct _vector {
     size_t padding;
     //! the elements of the vector
     double data[];
+    inline friend std::ostream& operator<< (std::ostream &out, const _vector & vector) {
+        for(size_t i = 0; i < vector.size; i ++) {
+            out << (vector.data)[i];
+            out << " ";
+        }
+        out << std::endl;
+        return out;
+    }
 } vector;
 
 /**
@@ -44,6 +53,17 @@ typedef struct _matrix {
     size_t col;
     //! row wise expansion of the elements in the matrix
     double data[];
+    inline friend std::ostream& operator<< (std::ostream &out, const _matrix & matrix) {
+        for(size_t i = 0; i < matrix.row; i ++) {
+            for(size_t j = 0; j < matrix.col; j ++) {
+                out << (matrix.data)[(i * matrix.col) + j];
+                out << " ";
+            }
+            out << std::endl;
+        }
+        out << std::endl;
+        return out;
+    }
 } matrix;
 
 

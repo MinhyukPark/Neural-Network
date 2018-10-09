@@ -22,11 +22,11 @@ class Network {
     public:
         //! Constructor that calls _init_network
         Network(int _num_layers, int _input_unit, int _layer_unit, int _output_unit);
-        double** affine_forward(double** a, Layer* layer);
-        double** relu_forward(double** z);
-        double** cross_entropy(double** f, double** a);
-        double** affine_backward(double** df, double** a, Layer* layer);
-        double** relu_backward(double** df, double** a, Layer* layer, double** a_prev); 
+        matrix* affine_forward(matrix* a, Layer* layer);
+        matrix* relu_forward(matrix* z);
+        matrix* cross_entropy(matrix* f, matrix* a);
+        matrix* affine_backward(matrix* df, matrix* a, Layer* layer);
+        matrix* relu_backward(matrix* df, matrix* a, Layer* layer, matrix* a_prev); 
         void test();
     private:
         std::vector<Layer*>* _layers;

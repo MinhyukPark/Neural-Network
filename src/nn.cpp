@@ -51,7 +51,7 @@ void testing_linalg() {
 
 int main() {
     std::cout<<"NN start?"<<std::endl;
-    Network* nn = new Network(4, 5, 256, 3);
+    Network* nn = new Network(4, 10, 5, 3);
     nn->test();
     testing_linalg();
     return 0;

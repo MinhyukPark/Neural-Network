@@ -14,7 +14,7 @@ Layer::Layer(int _input_unit, int _output_unit) : _input_unit(_input_unit),
 
 int Layer::_init_layer() {
     std::cout << "init layer" << std::endl;    
-    _nodes = new std::vector<double>();
-    _bias = new std::vector<double>();
+    _nodes = matrix_create(this->_input_unit, this->_output_unit);
+    _bias = vector_create(this->_output_unit);
     return 0;
 }
