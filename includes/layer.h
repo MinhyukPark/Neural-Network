@@ -18,7 +18,7 @@
 
 class Layer {
     public:
-        Layer();
+        Layer(int _input_unit, int _output_unit);
         friend std::ostream& operator<< (std::ostream &out, const Layer & layer) {
             out << "First element is: ";
             out << (*(layer._nodes))[0] << std::endl;
@@ -27,6 +27,8 @@ class Layer {
     private:
         std::vector<double>* _nodes;
         std::vector<double>* _bias;
+        int _input_unit;
+        int _output_unit;
         //! Initializes appropriate member variables
         int _init_layer();
 };

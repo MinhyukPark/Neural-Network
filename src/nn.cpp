@@ -10,7 +10,7 @@
 
 int main() {
     std::cout<<"NN start?"<<std::endl;
-    Network* nn = new Network();
+    Network* nn = new Network(4, 5, 256, 3);
     nn->test();
     return 0;
 }

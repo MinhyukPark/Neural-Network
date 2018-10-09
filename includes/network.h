@@ -21,10 +21,14 @@
 class Network {
     public:
         //! Constructor that calls _init_network
-        Network();
+        Network(int _num_layers, int _input_unit, int _layer_unit, int _output_unit);
         void test();
     private:
         std::vector<Layer*>* _layers;
+        int _num_layers;
+        int _input_unit;
+        int _layer_unit;
+        int _output_unit;
         //! Initializes appropriate member variables
         int _init_network();
 };

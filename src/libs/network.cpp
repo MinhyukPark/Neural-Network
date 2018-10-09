@@ -7,19 +7,30 @@
 
 #include "network.h"
 
-Network::Network() {
+Network::Network(int _num_layers, int _input_unit, int _layer_unit, int _output_unit) :
+                                                      _num_layers(_num_layers),
+                                                      _input_unit(_input_unit), 
+                                                      _layer_unit(_layer_unit),
+                                                      _output_unit(_output_unit) {
     this->_init_network();
 }
 
 int Network::_init_network() {
     std::cout << "init network" << std::endl;    
     _layers = new std::vector<Layer*>();
-    _layers->push_back(new Layer()); // should be push_back node
+    for(int i = 0; i < this->_num_layers; i ++) {
+        if(i == 0) {
+            _layers->push_back(new Layer(this->_input_unit, this->_layer_unit));
+        } else if(i == this->_num_layers - 1) {
+            _layers->push_back(new Layer(this->_layer_unit, this->_output_unit));
+        } else {
+            _layers->push_back(new Layer(this->_layer_unit, this->_layer_unit));
+        }
+    }
     return 0;
 }
 
 void Network::test() {
-    std::cout <<"size of vector: ";
+    std::cout <<"num layers: ";
     std::cout << _layers->size() <<std::endl;
-    std::cout << *(*_layers)[0] <<std::endl;
 }
