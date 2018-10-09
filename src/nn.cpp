@@ -54,6 +54,6 @@ int main() {
     Network* nn = new Network(4, 5, 256, 3);
     nn->test();
     testing_linalg();
-    std::cout<<nn->train_on_data("training_data.txt")<<std::endl;
+    std::cout<<nn->import_data("training_data.txt")<<std::endl;
     return 0;
 }
