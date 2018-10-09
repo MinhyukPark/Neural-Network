@@ -55,7 +55,23 @@ matrix* relu_forward(matrix* z) {
 }
 
 matrix* cross_entropy(matrix* f, matrix* a) {
-    return NULL;
+    matrix* df = matrix_create(f->row, f->col);
+    for(int i = 0; i < df->row; i ++) {
+        for(int j = 0; j < df->col; j ++) {
+            double curval = -1.0 / a->row;
+            double sum_scores = 0.0;
+            for(int k = 0; k < f->col; k ++) {
+                sum_scores += exp(MAT(f, i, k) / sum_scores);
+            }
+            if(j == MAT(a, i, a->col)) {
+                curval *= (1 - exp(MAT(f, i, j) / sum_scores);
+            } else {
+                curval *= (0 - exp(MAT(f, i, j) / sum_scores);
+            }
+            MAT(df, i, j) = curval;
+        } 
+    }
+    return df;
 } 
 
 matrix* affine_backward(matrix* df, matrix* a, Layer* layer) {
