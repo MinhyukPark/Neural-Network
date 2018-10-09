@@ -31,11 +31,27 @@ int Network::_init_network() {
 }
 
 matrix* affine_forward(matrix* a, Layer* layer) {
-    return NULL;
+    matrix* z = matmat_multiply(a, layer->_nodes);
+    for(int i = 0; i < z->row; i ++) {
+        for(int j = 0; j < z->col; j ++) {
+            MAT(z, i, j) += VEC(layer->_bias, j);
+        }
+    }
+    return z;
 }
 
 matrix* relu_forward(matrix* z) {
-    return NULL;
+    matrix* a = matrix_create(z->row, z->col);
+    for(int i = 0; i < a->row; i ++) {
+        for(int j = 0; j < a->col; j ++) {
+            if(MAT(z, i, j) > 0) {
+                MAT(a, i, j) = MAT(z, i, j);
+            } else {
+                MAT(a, i, j) = 0;
+            }
+        }
+    }
+    return a;
 }
 
 matrix* cross_entropy(matrix* f, matrix* a) {
