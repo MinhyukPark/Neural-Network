@@ -112,7 +112,7 @@ matrix* Network::relu_backward(matrix* da, matrix* a_prev) {
     return dz;
 }
 
-int Network::train_on_data(std::string filename) {
+int Network::import_data(std::string filename) {
     std::ifstream input_file(filename, std::ifstream::in);
     std::vector<double> vec;
     double d = 0.0;
@@ -128,6 +128,9 @@ int Network::train_on_data(std::string filename) {
     } 
     input_file.close();
     return this->_training_data->size(); 
+}
+
+int Network::train_network() {
 }
 
 void Network::test() {

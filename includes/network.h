@@ -29,7 +29,8 @@ class Network {
         matrix* cross_entropy(matrix* f, matrix* a);
         void** affine_backward(matrix* df, matrix* a, Layer* layer);
         matrix* relu_backward(matrix* df, matrix* a_prev); 
-        int train_on_data(std::string filename);
+        int import_data(std::string filename);
+        int train_network();
         void test();
     private:
         std::vector<Layer*>* _layers;
