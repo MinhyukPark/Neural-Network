@@ -27,9 +27,9 @@ class Layer {
             out << *layer._bias << std::endl;
             return out;
         }
-    private:
         matrix* _nodes;
         vector* _bias;
+    private:
         int _input_unit;
         int _output_unit;
         //! Initializes appropriate member variables
