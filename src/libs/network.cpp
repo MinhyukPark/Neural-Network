@@ -166,6 +166,9 @@ double Network::update_layers(matrix* current_batch) {
     // classification
     matrix* current_confusion_matrix = build_confusion_matrix(current_z, current_batch);
     double current_accuracy = this->calculate_accuracy(current_confusion_matrix);
+    this->_confusion_matrix = matmat_addition(this->_confusion_matrix,
+                                              current_confusion_matrix);  
+
     return 0.0;
 }
 
