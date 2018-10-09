@@ -193,7 +193,7 @@ double Network::_update_layers(matrix* current_batch) {
             }
         }
         for(size_t j = 0; j < current_layer->_bias->size; j ++) {
-            vector* current_cache_vector = (vector*)(cache_vec[i][1]);
+            vector* current_cache_vector = (vector*)(cache_vec[i][2]);
             VEC(current_layer->_bias, j) -= (this->_LEARNING_RATE * 
                                            VEC(current_cache_vector, j));
         }
