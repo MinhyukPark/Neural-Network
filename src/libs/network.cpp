@@ -19,6 +19,7 @@ int Network::_init_network() {
     std::cout << "init network" << std::endl;    
     _layers = new std::vector<Layer*>();
     _training_data = new std::vector<std::vector<double>>();
+    _confusion_matrix = matrix_create(this->_output_unit, this->_output_unit);
     for(int i = 0; i < this->_num_layers; i ++) {
         if(i == 0) {
             _layers->push_back(new Layer(this->_input_unit, this->_layer_unit));
@@ -150,8 +151,56 @@ int Network::train_network() {
 }
 
 double Network::update_layers(matrix* current_batch) {
-    
+    matrix* initial_x = matrix_create(current_batch->row, current_batch->col);
+    for(size_t i = 0; i < initial_x->row; i ++) {
+        for(size_t j = 0; j < initial_x->col; j ++) {
+            MAT(initial_x, i, j) = MAT(current_batch, i, j);
+        }
+    } 
+    matrix* current_z = NULL;
+    matrix* current_a = initial_x;
+    for(int i = 0; i < this->_num_layers; i ++) {
+        current_z = this->affine_forward(current_a, (*(this->_layers))[i]);
+        current_a = this->relu_forward(current_z);
+    }
+    // classification
+    matrix* current_confusion_matrix = build_confusion_matrix(current_z, current_batch);
+    double current_accuracy = this->calculate_accuracy(current_confusion_matrix);
     return 0.0;
+}
+
+double Network::calculate_accuracy(matrix* confusion_matrix) {
+    int correct = 0;
+    int total = 0;
+    for(size_t i = 0; i < confusion_matrix->row; i ++) {
+        for(size_t j = 0; j < confusion_matrix->col; j ++) {
+            if(i == j) {
+                //correct += MAT(confusion_matrix, i, j);
+                correct += 1; 
+            }
+            //total += MAT(confusion_matrix, i, j);
+            total += 1;
+        }
+    }
+    return ((double)correct) / total;
+}
+
+matrix* Network::build_confusion_matrix(matrix* f, matrix* current_batch) {
+    matrix* confusion_matrix = matrix_create(this->_output_unit, this->_output_unit);
+    for(size_t i = 0; i < f->row; i ++) {
+        int cur_max_index = 0;
+        for(int j = 0; j < this->_output_unit; j ++) {
+            if(MAT(f, i, cur_max_index) < MAT(f, i, j)) {
+                cur_max_index = j;
+            }
+        } 
+        int current_count = MAT(confusion_matrix, cur_max_index,
+                                 (int)(MAT(current_batch, i, this->_output_unit)));
+        
+        MAT(confusion_matrix, cur_max_index, (int)(MAT(current_batch, i,
+                                        this->_output_unit))) = current_count + 1;
+    }
+    return confusion_matrix;
 }
 
 void Network::test() {

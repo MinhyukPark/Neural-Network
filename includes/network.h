@@ -34,6 +34,8 @@ class Network {
         int import_data(std::string filename);
         int train_network();
         double update_layers(matrix* current_batch);
+        double calculate_accuracy(matrix* confusion_matrix);
+        matrix* build_confusion_matrix(matrix* f, matrix* current_batch);
         void test();
     private:
         std::vector<Layer*>* _layers;
@@ -45,8 +47,7 @@ class Network {
         int _EPOCH = 100;
         int _WEIGHT_SCALE = 0.01;
         int _BATCH_SIZE = 128;
-
-         
+        matrix* _confusion_matrix;
         //! Initializes appropriate member variables
         int _init_network();
 };
