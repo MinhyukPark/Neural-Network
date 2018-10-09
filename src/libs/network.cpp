@@ -131,6 +131,27 @@ int Network::import_data(std::string filename) {
 }
 
 int Network::train_network() {
+    auto random_engine = std::default_random_engine {};
+    for(int i = 0; i < this->_EPOCH; i ++) {
+        std::shuffle((*(this->_training_data)).begin(),
+                     (*(this->_training_data)).end(), random_engine);
+        for(int j = 0; j < this->_input_unit / this->_BATCH_SIZE; j ++) {
+            matrix* current_batch = matrix_create(this->_BATCH_SIZE,
+                                                  this->_input_unit + 1);
+            for(int k = 0; k < this->_BATCH_SIZE; k ++) {
+                for(int l = 0; l < this->_input_unit + 1; l ++) {
+                    MAT(current_batch, k, l) = ((*(this->_training_data))[k])[l];
+                }
+            }
+            update_layers(current_batch);
+        }
+    }
+    return 0;
+}
+
+double Network::update_layers(matrix* current_batch) {
+    
+    return 0.0;
 }
 
 void Network::test() {
