@@ -55,5 +55,6 @@ int main() {
     nn->test();
     testing_linalg();
     std::cout<<nn->import_data("training_data.txt")<<std::endl;
+    nn->train_network();
     return 0;
 }

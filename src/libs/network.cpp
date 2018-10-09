@@ -84,7 +84,7 @@ void** Network::affine_backward(matrix* df, matrix* a, Layer* layer) {
     vector* db = vector_create(df->col);
     for(size_t i = 0; i < df->col; i ++) {
         double curdbval = 0.0;
-        for(size_t j = 0; j < df->row; i ++) {
+        for(size_t j = 0; j < df->row; j ++) {
             curdbval += MAT(df, j, i);
         }
         VEC(db, i) = curdbval;
@@ -136,7 +136,7 @@ int Network::train_network() {
     for(int i = 0; i < this->_EPOCH; i ++) {
         std::shuffle((*(this->_training_data)).begin(),
                      (*(this->_training_data)).end(), random_engine);
-        for(int j = 0; j < this->_input_unit / this->_BATCH_SIZE; j ++) {
+        for(int j = 0; j < this->_POLICY_SIZE / this->_BATCH_SIZE; j ++) {
             matrix* current_batch = matrix_create(this->_BATCH_SIZE,
                                                   this->_input_unit + 1);
             for(int k = 0; k < this->_BATCH_SIZE; k ++) {
@@ -144,51 +144,78 @@ int Network::train_network() {
                     MAT(current_batch, k, l) = ((*(this->_training_data))[k])[l];
                 }
             }
-            update_layers(current_batch);
+            std::cout<<"current accuracy is: ";
+            std::cout<<_update_layers(current_batch)<<std::endl;
         }
     }
     return 0;
 }
 
-double Network::update_layers(matrix* current_batch) {
+double Network::_update_layers(matrix* current_batch) {
     matrix* initial_x = matrix_create(current_batch->row, current_batch->col);
     for(size_t i = 0; i < initial_x->row; i ++) {
         for(size_t j = 0; j < initial_x->col; j ++) {
             MAT(initial_x, i, j) = MAT(current_batch, i, j);
         }
     } 
+    std::vector<matrix*> a_vec;
+    a_vec.insert(a_vec.begin(), initial_x);
     matrix* current_z = NULL;
     matrix* current_a = initial_x;
     for(int i = 0; i < this->_num_layers; i ++) {
         current_z = this->affine_forward(current_a, (*(this->_layers))[i]);
         current_a = this->relu_forward(current_z);
+        a_vec.insert(a_vec.begin(), current_a);
     }
     // classification
-    matrix* current_confusion_matrix = build_confusion_matrix(current_z, current_batch);
-    double current_accuracy = this->calculate_accuracy(current_confusion_matrix);
+    matrix* current_confusion_matrix = _build_confusion_matrix(current_z, current_batch);
+    double current_accuracy = this->_calculate_accuracy(current_confusion_matrix);
     this->_confusion_matrix = matmat_addition(this->_confusion_matrix,
                                               current_confusion_matrix);  
 
-    return 0.0;
+    std::vector<void**> cache_vec;
+    matrix* current_dz = cross_entropy(current_z, current_batch);
+    void** current_cache = NULL;
+    for(int i = 0; i < this->_num_layers; i ++) {
+        current_cache = affine_backward(current_dz, a_vec[i + 1],
+                                        (*(this->_layers))[this->_num_layers - i - 1]);
+        cache_vec.insert(cache_vec.begin(), current_cache);
+        current_dz = relu_backward((matrix*)current_cache[0], a_vec[i + 1]);
+    }
+
+    for(int i = 0; i < this->_num_layers; i ++) {
+        Layer* current_layer = (*(this->_layers))[i];
+        for(size_t j = 0; j < current_layer->_nodes->row; j ++) {
+            for(size_t k = 0; k < current_layer->_nodes->col; k ++) {
+                matrix* current_cache_matrix = (matrix*)(cache_vec[i][1]);
+                MAT(current_layer->_nodes, j, k) -= (this->_LEARNING_RATE * 
+                                             MAT(current_cache_matrix, j, k));
+            }
+        }
+        for(size_t j = 0; j < current_layer->_bias->size; j ++) {
+            vector* current_cache_vector = (vector*)(cache_vec[i][1]);
+            VEC(current_layer->_bias, j) -= (this->_LEARNING_RATE * 
+                                           VEC(current_cache_vector, j));
+        }
+    }
+    return current_accuracy;
 }
 
-double Network::calculate_accuracy(matrix* confusion_matrix) {
+double Network::_calculate_accuracy(matrix* confusion_matrix) {
     int correct = 0;
     int total = 0;
     for(size_t i = 0; i < confusion_matrix->row; i ++) {
         for(size_t j = 0; j < confusion_matrix->col; j ++) {
             if(i == j) {
-                //correct += MAT(confusion_matrix, i, j);
-                correct += 1; 
+                correct += MAT(confusion_matrix, i, j);
             }
-            //total += MAT(confusion_matrix, i, j);
-            total += 1;
+            total += MAT(confusion_matrix, i, j);
         }
     }
     return ((double)correct) / total;
 }
 
-matrix* Network::build_confusion_matrix(matrix* f, matrix* current_batch) {
+matrix* Network::_build_confusion_matrix(matrix* f, matrix* current_batch) {
     matrix* confusion_matrix = matrix_create(this->_output_unit, this->_output_unit);
     for(size_t i = 0; i < f->row; i ++) {
         int cur_max_index = 0;
@@ -198,10 +225,10 @@ matrix* Network::build_confusion_matrix(matrix* f, matrix* current_batch) {
             }
         } 
         int current_count = MAT(confusion_matrix, cur_max_index,
-                                 (int)(MAT(current_batch, i, this->_output_unit)));
+                                 (int)(MAT(current_batch, i, this->_input_unit)));
         
         MAT(confusion_matrix, cur_max_index, (int)(MAT(current_batch, i,
-                                        this->_output_unit))) = current_count + 1;
+                                        this->_input_unit))) = current_count + 1;
     }
     return confusion_matrix;
 }

@@ -10,6 +10,8 @@
 
 #include <vector>
 #include <iostream>
+#include <algorithm>
+#include <random>
 #include "linalg.h"
 
 /**

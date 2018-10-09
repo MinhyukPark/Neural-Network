@@ -12,8 +12,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <algorithm>
-#include <random>
 #include "layer.h"
 
 /**
@@ -33,11 +31,12 @@ class Network {
         matrix* relu_backward(matrix* df, matrix* a_prev); 
         int import_data(std::string filename);
         int train_network();
-        double update_layers(matrix* current_batch);
-        double calculate_accuracy(matrix* confusion_matrix);
-        matrix* build_confusion_matrix(matrix* f, matrix* current_batch);
         void test();
     private:
+        double _update_layers(matrix* current_batch);
+        double _calculate_accuracy(matrix* confusion_matrix);
+        matrix* _build_confusion_matrix(matrix* f, matrix* current_batch);
+
         std::vector<Layer*>* _layers;
         std::vector<std::vector<double>>* _training_data;
         int _num_layers;
@@ -47,6 +46,8 @@ class Network {
         int _EPOCH = 100;
         int _WEIGHT_SCALE = 0.01;
         int _BATCH_SIZE = 128;
+        int _POLICY_SIZE = 10000;
+        double _LEARNING_RATE = 0.1;
         matrix* _confusion_matrix;
         //! Initializes appropriate member variables
         int _init_network();
