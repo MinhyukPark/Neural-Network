@@ -22,6 +22,7 @@ script:
 # Deploy using travis builtin GitHub Pages support
 deploy:
   provider: pages
+  skip_cleanup: true
   local_dir: /docs/html
   github_token: $GITHUB_TOKEN
   verbose: true
