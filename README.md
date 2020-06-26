@@ -19,6 +19,7 @@ Neural Network in C++
 
 [Documentation Backup](https://cdn.rawgit.com/MinhyukPark/Neural-Network/gh-pages/index.html)
 - RawGit
+- RawGit is being retired
 
 ## Motivation
 
