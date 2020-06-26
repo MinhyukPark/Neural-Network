@@ -1,6 +1,4 @@
 # This will run on Travis' 'new' container-based infrastructure
-sudo: false
-
 # Blacklist
 branches:
   only:
@@ -23,8 +21,8 @@ script:
 
 # Deploy using travis builtin GitHub Pages support
 deploy:
-  provider: pages
+  provider: pages:git
   local_dir: /docs/html
   github_token: $GITHUB_TOKEN
-  on:
-    branch: master
+  edge: true
+  verbose: true
