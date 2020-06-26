@@ -21,8 +21,7 @@ script:
 
 # Deploy using travis builtin GitHub Pages support
 deploy:
-  provider: pages:git
+  provider: pages
   local_dir: /docs/html
   github_token: $GITHUB_TOKEN
-  edge: true
   verbose: true
